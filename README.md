@@ -25,6 +25,7 @@ InstantID is a new state-of-the-art tuning-free method to achieve ID-Preserving 
 <img src='assets/applications.png'>
 
 ## Release
+- [2024/07/18] 🔥 We are training InstantID for [Kolors](https://huggingface.co/Kwai-Kolors/Kolors-diffusers). The weight requires significant computational power, which is currently in the process of iteration. After the model training is completed, it will be open-sourced. The latest checkpoint results are referenced in [Kolors Version](#kolors-version). 
 - [2024/04/03] 🔥 We release our recent work [InstantStyle](https://github.com/InstantStyle/InstantStyle) for style transfer, compatible with InstantID!
 - [2024/02/01] 🔥 We have supported LCM acceleration and Multi-ControlNets on our [Huggingface Spaces Demo](https://huggingface.co/spaces/InstantX/InstantID)! Our depth estimator is supported by [Depth-Anything](https://github.com/LiheYoung/Depth-Anything).
 - [2024/01/31] 🔥 [OneDiff](https://github.com/siliconflow/onediff?tab=readme-ov-file#easy-to-use) now supports accelerated inference for InstantID, check [this](https://github.com/siliconflow/onediff/blob/main/benchmarks/instant_id.py) for details!
@@ -60,6 +61,16 @@ Comparison with pre-trained character LoRAs. We don't need multiple images and s
 </p>
 
 Comparison with InsightFace Swapper (also known as ROOP or Refactor). However, in non-realistic style, our work is more flexible on the integration of face and background.
+
+### Kolors Version
+
+We have adapted InstantID for [Kolors](https://huggingface.co/Kwai-Kolors/Kolors-diffusers). Leveraging Kolors' robust text generation capabilities 👍👍👍, InstantID can be integrated with Kolors to simultaneously generate **ID** and **text**.
+
+
+| demo | demo | demo |
+|:-----:|:-----:|:-----:|
+<img src="./assets/kolor/demo_1.jpg" >|<img src="./assets/kolor/demo_2.jpg" >|<img src="./assets/kolor/demo_3.jpg" >|
+
 
 
 ## Download
@@ -100,10 +111,13 @@ For face encoder, you need to manually download via this [URL](https://github.co
 
 ## Usage
 
-If you want to reproduce results in the paper, please refer to the code in [infer_full.py](infer_full.py). 
-If you want to compare the results with other methods, even without using depth-controlnet, it is recommended that you use this code. 
-If you want to quickly experience InstantID, please refer to the code in [infer.py](infer.py). 
-The following code👇 comes from [infer.py](infer.py). 
+If you want to reproduce results in the paper, please refer to the code in [infer_full.py](infer_full.py). If you want to compare the results with other methods, even without using depth-controlnet, it is recommended that you use this code. 
+
+If you are pursuing better results, it is recommended to follow [InstantID-Rome](https://github.com/instantX-research/InstantID-Rome).
+
+The following code👇 comes from [infer.py](infer.py). If you want to quickly experience InstantID, please refer to the code in [infer.py](infer.py). 
+
+
 
 ```python
 # !pip install opencv-python transformers accelerate insightface
