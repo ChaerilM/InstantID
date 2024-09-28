@@ -70,7 +70,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     
       - name: setup-cog
-        if: steps.what-changed.outputs.cog-push == 'true'
         uses: replicate/setup-cog@v2
         with:
           install-cuda: false
