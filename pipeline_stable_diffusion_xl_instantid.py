@@ -42,7 +42,7 @@ from diffusers.utils.import_utils import is_xformers_available
 from ip_adapter.resampler import Resampler
 from ip_adapter.utils import is_torch2_available
 
-from ip_adapter.attention_processor import AttnProcessor2_0, IPAttnProcessor
+from ip_adapter.attention_processor import AttnProcessor2_0 as AttnProcessor, IPAttnProcessor
 
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
@@ -152,12 +152,12 @@ class StableDiffusionXLInstantIDPipeline(StableDiffusionXLControlNetPipeline):
             else:
                 raise ValueError("xformers is not available. Make sure it is installed correctly")
 
-    def load_ip_adapter_instantid(self, model_ckpt, image_emb_dim=512, num_tokens=16, scale=0.5):     
+    def load_ip_adapter_instantid(self, model_ckpt, image_emb_dim=512, num_tokens=16, scale=0.5):
         self.set_image_proj_model(model_ckpt, image_emb_dim, num_tokens)
         self.set_ip_adapter(model_ckpt, num_tokens, scale)
 
     def set_image_proj_model(self, model_ckpt, image_emb_dim=512, num_tokens=16):
-        
+
         image_proj_model = Resampler(
             dim=1280,
             depth=4,
@@ -180,7 +180,7 @@ class StableDiffusionXLInstantIDPipeline(StableDiffusionXLControlNetPipeline):
         self.image_proj_model_in_features = image_emb_dim
 
     def set_ip_adapter(self, model_ckpt, num_tokens, scale):
-        
+
         unet = self.unet
         attn_procs = {}
         for name in unet.attn_processors.keys():
@@ -196,8 +196,8 @@ class StableDiffusionXLInstantIDPipeline(StableDiffusionXLControlNetPipeline):
             if cross_attention_dim is None:
                 attn_procs[name] = AttnProcessor().to(unet.device, dtype=unet.dtype)
             else:
-                attn_procs[name] = IPAttnProcessor(hidden_size=hidden_size, 
-                                                   cross_attention_dim=cross_attention_dim, 
+                attn_procs[name] = IPAttnProcessor(hidden_size=hidden_size,
+                                                   cross_attention_dim=cross_attention_dim,
                                                    scale=scale,
                                                    num_tokens=num_tokens).to(unet.device, dtype=unet.dtype)
         unet.set_attn_processor(attn_procs)
@@ -215,7 +215,7 @@ class StableDiffusionXLInstantIDPipeline(StableDiffusionXLControlNetPipeline):
                 attn_processor.scale = scale
 
     def _encode_prompt_image_emb(self, prompt_image_emb, device, dtype, do_classifier_free_guidance):
-        
+
         if isinstance(prompt_image_emb, torch.Tensor):
             prompt_image_emb = prompt_image_emb.clone().detach()
         else:
@@ -503,7 +503,7 @@ class StableDiffusionXLInstantIDPipeline(StableDiffusionXLControlNetPipeline):
         )
 
         # 3.2 Encode image prompt
-        prompt_image_emb = self._encode_prompt_image_emb(image_embeds, 
+        prompt_image_emb = self._encode_prompt_image_emb(image_embeds,
                                                          device,
                                                          self.unet.dtype,
                                                          self.do_classifier_free_guidance)
